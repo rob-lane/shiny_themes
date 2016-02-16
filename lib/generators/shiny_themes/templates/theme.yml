@@ -1,0 +1,8 @@
+---
+development: &development
+  name: 'default'
+  layout: 'application'
+test:
+  <<: *development
+production:
+  <<: *development
