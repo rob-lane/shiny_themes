@@ -25,19 +25,18 @@ module ShinyThemes
     end
 
     initializer 'shiny_themes.theme_config' do |_|
-      Engine.create_config(default_theme_path: File.join('app', 'themes'),
-                    theme_asset_directories: %w(images stylesheets javascripts))
+      Engine.create_config(path: File.join('app', 'themes'), asset_directories: %w(images stylesheets javascripts))
     end
 
     initializer 'shiny_themes.assets_path' do |app|
-      Dir.glob(Rails.root.join(app.config.theme.default_theme_path, '*', 'assets', '*')) do |dir|
-        app.config.assets.paths << dir
+      Dir.glob(Rails.root.join(app.config.theme.path, '*', 'assets', '**', '*')) do |dir|
+        app.config.assets.paths << dir if Pathname(dir).directory?
       end
     end
 
     initializer 'shiny_themes.precompile_assets' do |app|
       app.config.assets.precompile << Proc.new do |path, filename|
-        if path =~ /#{app.config.theme.default_theme_path}/
+        if path =~ /#{app.config.theme.path}/
           if !%w(.js .css).include?(File.extname(filename))
             true
           elsif path =~ /^[^\/]+\/manifest((_|-).+)?\.(js|css)$/
