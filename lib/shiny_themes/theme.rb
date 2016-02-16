@@ -9,7 +9,7 @@ module ShinyThemes
     attr_reader :name
     # @return [String]] the name of the default layout to use.  Defaults to
     #   config.theme.layout or 'application' if this does not exist
-    attr_reader :layout
+    attr_accessor :layout
 
     validates_presence_of :name, :layout
     # 'views' directory must exist in the theme directory 'name/views' where
@@ -18,13 +18,12 @@ module ShinyThemes
     # 'assets' directory must exist in the theme directory 'name/assets' where
     #   name is the theme name
     validate :assets_directory_exists
-    # all THEME_ASSET_DIRECTORIES must exist under 'name/assets' and must have a
-    # namespaced directory that shares the name of the theme.  For example the
-    # images directory should look like - 'name/assets/images/name' where name is
-    # the theme name.
-
+    # all Rails.application.config.theme.asset_directories must exist under
+    # 'name/assets' and must have a namespaced directory that shares the name of
+    # the theme.  For example the images directory should look like -
+    # 'name/assets/images/name' where name is the theme name.
     validate do |theme|
-      Rails.application.config.theme.theme_asset_directories.each do |directory|
+      Rails.application.config.theme.asset_directories.each do |directory|
         unless theme.asset_path.join(directory).exist? &&
             theme.asset_path.join(directory, name).exist?
           theme.errors.add(:base, "Missing or invalid #{directory} asset directory for theme")
@@ -37,12 +36,12 @@ module ShinyThemes
     #   name of the theme.
     # @option options [String] :layout (Rails.application.config.theme.layout ||
     #   'application') The name of the default layout.
-    # @option options [String] : :theme_path (DEFAULT_THEME_PATH) The path to the
-    #   theme's parent directory.
+    # @option options [String] : :theme_path (Rails.application.config.theme.path)
+    #   The path to the theme's parent directory.
     def initialize(options = {})
       @name = options[:name] || Rails.application.config.theme.name
       @layout = options[:layout] || Rails.application.config.theme.layout || 'application'
-      @theme_path = options[:theme_path] || Rails.application.config.theme.default_theme_path
+      @theme_path = options[:theme_path] || Rails.application.config.theme.path
     end
 
     # @return [Pathname] Path to the theme's root directory

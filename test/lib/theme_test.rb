@@ -5,7 +5,7 @@ class ThemeTest < ActiveSupport::TestCase
   include ThemeTestHelper
 
   def setup
-    @theme_name, @layout_name = 'test_theme', 'test_layout'
+    @theme_name, @layout_name = 'temp_theme', 'temp_layout'
     # Create theme directories
     build_theme_dir(@theme_name)
   end

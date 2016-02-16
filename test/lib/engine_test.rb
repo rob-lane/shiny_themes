@@ -4,9 +4,9 @@ class EngineTest < ActiveSupport::TestCase
   include ThemeTestHelper
 
   def setup
-    @themes_path = Rails.root.join(Rails.application.config.theme.default_theme_path)
+    @themes_path = Rails.root.join(Rails.application.config.theme.path)
     # Grab all directory names in themes_path to get all installed theme names
-    @theme_names = Dir.glob(@themes_path.join('*/'))
+    @theme_names = Dir.glob(@themes_path.join('*/')).map{ |fn| Pathname.new(fn).basename }
     @theme_config = YAML.load_file(Rails.root.join('config', 'theme.yml'))[Rails.env]
   end
 
@@ -16,15 +16,15 @@ class EngineTest < ActiveSupport::TestCase
   end
 
   test 'default theme path configured' do
-    assert_equal(File.join('app', 'themes'), Rails.application.config.theme.default_theme_path)
+    assert_equal(File.join('app', 'themes'), Rails.application.config.theme.path)
   end
 
   test 'theme asset directories configured' do
-    assert_includes(Rails.application.config.theme.theme_asset_directories, 'images',
+    assert_includes(Rails.application.config.theme.asset_directories, 'images',
                     'Images must be part of theme asset_directories by default')
-    assert_includes(Rails.application.config.theme.theme_asset_directories, 'stylesheets',
+    assert_includes(Rails.application.config.theme.asset_directories, 'stylesheets',
                     'Stylesheets must be part of theme asset_directories by default')
-    assert_includes(Rails.application.config.theme.theme_asset_directories, 'javascripts',
+    assert_includes(Rails.application.config.theme.asset_directories, 'javascripts',
                     'Javascripts must be part of theme asset_directories by default')
   end
 
@@ -65,7 +65,7 @@ class EngineTest < ActiveSupport::TestCase
 
   test 'includes RendersTheme in application controller' do
     assert_respond_to(ApplicationController, :renders_theme)
-    assert_respond_to(ApplicationController, :current_theme)
+    assert_respond_to(ApplicationController, :theme)
   end
 
 end
