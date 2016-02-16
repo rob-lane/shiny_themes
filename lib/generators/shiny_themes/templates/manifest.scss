@@ -1,0 +1,12 @@
+/* manifest stylesheet
+* Use this to import all stylesheets for your theme.  If you want to
+* import stylesheets in different pages or layouts simply create another
+* manifest file and begin the name with 'manifest_' or 'manifest-'
+*
+* The scss extension uses sass import syntax to import stylesheets. If
+* you want to use the sprockets require comment syntax create a manifest
+* file with a .css extension (or rename this one).
+*/
+
+/* Require all stylesheets in the current directory*/
+@import "*/**";
