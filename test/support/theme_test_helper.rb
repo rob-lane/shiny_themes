@@ -5,7 +5,7 @@ module ThemeTestHelper
   # @param name [String] name of the theme to build directories for
   def build_theme_dir(name)
     FileUtils.mkdir_p(theme_root.join(name, 'views'))
-    ShinyThemes::THEME_ASSET_DIRECTORIES.each do |asset_dir_name|
+    Rails.application.config.theme.theme_asset_directories.each do |asset_dir_name|
       FileUtils.mkdir_p(theme_root.join(name, 'assets', asset_dir_name, name))
     end
   end
@@ -18,6 +18,6 @@ module ThemeTestHelper
 
   # @return [Pathname] path to the root themes directory
   def theme_root
-    @theme_root ||= Rails.root.join(ShinyThemes::DEFAULT_THEME_PATH)
+    @theme_root ||= Rails.root.join(Rails.application.config.theme.default_theme_path)
   end
 end

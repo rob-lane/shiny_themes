@@ -14,6 +14,8 @@ class ThemeTest < ActiveSupport::TestCase
     @theme = nil
     # Destroy root theme directory
     cleanup_theme_dir(@theme_name)
+    # Reload the default config after any test modifications
+    ShinyThemes::Engine.reload_config
   end
 
   def theme
@@ -92,16 +94,16 @@ class ThemeTest < ActiveSupport::TestCase
   end
 
   test "uses theme configuration for default name" do
-    Rails.application.config.theme.name = 'default_name'
+    refute_nil(Rails.application.config.theme.name)
     original_theme_name, @theme_name = @theme_name, nil
-    assert_equal('default_name', theme.name, 'Theme name should default to config.theme.name value')
+    assert_equal(Rails.application.config.theme.name, theme.name, 'Theme name should default to config.theme.name value')
     @theme_name = original_theme_name
   end
 
   test "uses theme configuration for default layout" do
-    Rails.application.config.theme.layout = 'default_layout'
+    refute_nil(Rails.application.config.theme.layout)
     @layout_name = nil
-    assert_equal('default_layout', theme.layout, 'Theme layout should defualt to config.theme.layout value')
+    assert_equal(Rails.application.config.theme.layout, theme.layout, 'Theme layout should defualt to config.theme.layout value')
   end
 
   test "uses application for default layout when config value is missing" do

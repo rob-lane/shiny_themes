@@ -24,7 +24,7 @@ module ShinyThemes
     # the theme name.
 
     validate do |theme|
-      ShinyThemes::THEME_ASSET_DIRECTORIES.each do |directory|
+      Rails.application.config.theme.theme_asset_directories.each do |directory|
         unless theme.asset_path.join(directory).exist? &&
             theme.asset_path.join(directory, name).exist?
           theme.errors.add(:base, "Missing or invalid #{directory} asset directory for theme")
@@ -42,7 +42,7 @@ module ShinyThemes
     def initialize(options = {})
       @name = options[:name] || Rails.application.config.theme.name
       @layout = options[:layout] || Rails.application.config.theme.layout || 'application'
-      @theme_path = options[:theme_path] || DEFAULT_THEME_PATH
+      @theme_path = options[:theme_path] || Rails.application.config.theme.default_theme_path
     end
 
     # @return [Pathname] Path to the theme's root directory

@@ -1,10 +1,8 @@
 require 'active_model'
-require 'shiny_themes/railtie'
-require 'shiny_themes/theme'
+require 'active_support/concern'
+require 'shiny_themes/engine'
 
 module ShinyThemes
-  # Default directory to install themes in
-  DEFAULT_THEME_PATH = File.join('app', 'themes')
-  # Asset subdirectories
-  THEME_ASSET_DIRECTORIES = %w(images stylesheets javascripts)
+  autoload :Theme, 'shiny_themes/theme'
+  autoload :RendersTheme, 'shiny_themes/renders_theme'
 end
