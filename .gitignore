@@ -8,3 +8,4 @@ test/dummy/tmp/
 test/dummy/.sass-cache
 .idea
 Thumbs.db
+.byebug_history
