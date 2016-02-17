@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["shinylane"]
   s.email       = ["roblane09@gmail.com"]
   s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of ShinyThemes."
-  s.description = "TODO: Description of ShinyThemes."
+  s.summary     = "A simple Rails theme plugin"
+  s.description = "Generate and manage themes which are made up of templates and assets."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
