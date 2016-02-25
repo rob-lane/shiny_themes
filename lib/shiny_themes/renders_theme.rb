@@ -10,6 +10,18 @@ module ShinyThemes
       end
     end
 
+    def current_theme_name
+      self.class.theme.name
+    end
+
+    def update_current_theme(name, options = {})
+      self.class.renders_theme(name, options)
+      Rails.application.config.theme.name = current_theme_name
+      Rails.application.config.theme.layout = self.class.theme.layout
+      ShinyThemes::Engine.theme_config.save unless options[:dont_save]
+      self.class.theme # return current theme object
+    end
+
     module ClassMethods
       def renders_theme(theme_name, options = {})
         self.theme = Theme.new(options.merge(name: theme_name, layout: options[:layout]))

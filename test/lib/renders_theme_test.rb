@@ -8,7 +8,8 @@ module ShinyThemes
     end
   end
 
-  # If disable_clear_and_finalize is set to true, Rails will not clear other routes when calling again the draw method. Look at the source code at: http://apidock.com/rails/v4.0.2/ActionDispatch/Routing/RouteSet/draw
+  # If disable_clear_and_finalize is set to true, Rails will not clear other routes when calling again the draw method.
+  # Look at the source code at: http://apidock.com/rails/v4.0.2/ActionDispatch/Routing/RouteSet/draw
   Rails.application.routes.disable_clear_and_finalize = true
 
   # Create a new route for our new action
@@ -21,10 +22,13 @@ module ShinyThemes
 
     def setup
       @original_theme = @controller.class.theme
+      @original_config = Rails.application.config.theme.clone
     end
 
     def teardown
       @controller.class.theme = @original_theme
+      Rails.application.config.theme = @original_config
+      ShinyThemes::Engine.theme_config.save
     end
 
     test 'included controller has theme class attribute' do
@@ -49,7 +53,7 @@ module ShinyThemes
       assert_includes(@controller.view_paths.paths.map(&:to_s), @controller.class.theme.views_path.to_s)
     end
 
-    test '#renders_theme changes controller theme and layout' do
+    test '.renders_theme changes controller theme and layout' do
       test_theme_name, test_theme_layout = 'temp_theme', 'temp_layout'
       @controller.class_eval do
         renders_theme test_theme_name, layout: test_theme_layout
@@ -57,5 +61,13 @@ module ShinyThemes
       assert_equal(test_theme_name, @controller.class.theme.name)
       assert_equal(test_theme_layout, @controller.class.theme.layout)
     end
+
+    test '#update_current_theme changes controller theme and layout' do
+      test_theme_name, test_theme_layout = 'temp_theme', 'temp_layout'
+      @controller.update_current_theme(test_theme_name, layout: test_theme_layout)
+      assert_equal(test_theme_name, @controller.class.theme.name)
+      assert_equal(test_theme_layout, @controller.class.theme.layout)
+    end
+
   end
 end

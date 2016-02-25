@@ -15,7 +15,7 @@ class ThemeTest < ActiveSupport::TestCase
     # Destroy root theme directory
     cleanup_theme_dir(@theme_name)
     # Reload the default config after any test modifications
-    ShinyThemes::Engine.reload_config
+    ShinyThemes::Engine.theme_config.load
   end
 
   def theme

@@ -1,3 +1,5 @@
+require 'shiny_themes/theme_config'
+
 module ShinyThemes
   # Engine defines configuration and populates from the theme.yml config file.
   # The class also updates the asset pipeline to include theme directories and files
@@ -5,43 +7,18 @@ module ShinyThemes
   class Engine < ::Rails::Engine
     # Class methods to help manage the rails config and the associated YAML file.
     class << self
-      # Create the ordered options, populate with provided hash and load YAML file
-      # options.
-      # @param default_options [Hash] (Hash.new) - Options to populate the theme
-      #   config with.
-      # @options default_options [String] :path The path relative to the rails root
-      #   where templates are installed
-      # @options default_options [Array(String)] :asset_directories Names of
-      #   directories containing assets for the theme relative to the 'assets'
-      #   directory.
-      def create_config(default_options = {})
-        Rails.application.config.theme = ActiveSupport::OrderedOptions.new
-        Rails.application.config.theme.merge!(default_options)
-        reload_config
+      def theme_config
+        @theme_config ||= ShinyThemes::ThemeConfig.new
       end
 
-      # Load the theme.yml file and merge it with the theme configuration
-      def reload_config
-        if config_pathname.exist?
-          Rails.application.config.theme.merge!(YAML.load_file(config_pathname)[Rails.env].symbolize_keys)
-        end
-      end
-
-      # Save the current state of the theme config to the theme.yml file
-      def persist_config
-        config_pathname.open('w') do |file|
-          file.write(Rails.application.config.theme.to_yaml)
-        end
-      end
-
-      # The pathname where the theme config file can be found
-      def config_pathname
-        @config_pathname ||= Rails.root.join('config', 'theme.yml')
+      def default_options
+        { path: File.join('app', 'themes'),
+          asset_directories: %w(images stylesheets javascripts) }
       end
     end
 
     initializer 'shiny_themes.theme_config' do |_|
-      Engine.create_config(path: File.join('app', 'themes'), asset_directories: %w(images stylesheets javascripts))
+      Engine.theme_config.load
     end
 
     initializer 'shiny_themes.assets_path' do |app|
