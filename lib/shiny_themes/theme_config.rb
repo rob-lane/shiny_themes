@@ -19,7 +19,7 @@ module ShinyThemes
 
     # Load the theme.yml file and merge it with the theme configuration
     def load
-      new_config = full_config[Rails.env].deep_symbolize_keys!
+      new_config = full_config[Rails.env].try(:deep_symbolize_keys!) || {}
       # Honor values in config file over defaults
       @defaults.reject! { |k, _| new_config.keys.include?(k) }
       Rails.application.config.theme.merge!(@defaults.merge(new_config))
@@ -39,7 +39,11 @@ module ShinyThemes
     end
 
     def full_config
-      @full_config ||= YAML.load(File.open(config_pathname))
+      begin
+        @full_config ||= YAML.load(File.open(config_pathname))
+      rescue Errno::ENOENT
+        {}
+      end
     end
   end
 end

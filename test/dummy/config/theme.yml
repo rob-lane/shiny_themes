@@ -1,4 +1,8 @@
 ---
+development: &development
+  name: 'default'
+  layout: 'application'
 test:
-  :name: test_theme
-  :layout: test_layout
+  <<: *development
+production:
+  <<: *development
