@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = ShinyThemes::VERSION
   s.authors     = ["shinylane"]
   s.email       = ["roblane09@gmail.com"]
-  s.homepage    = "TODO"
+  s.homepage    = "https://github.com/rob-lane/shiny_themes"
   s.summary     = "A simple Rails theme plugin"
   s.description = "Generate and manage themes which are made up of templates and assets."
   s.license     = "MIT"
