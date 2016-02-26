@@ -36,7 +36,7 @@ module ShinyThemes
         if path =~ /#{app.config.theme.path}/
           if !%w(.js .css).include?(File.extname(filename))
             true
-          elsif path =~ /^[^\/]+\/manifest((_|-).+)?\.(js|css)$/ # named or starts with manifest
+          elsif path =~ /^[^\/]+\/manifest((_|-).+)?\.(js|css|scss|sass)$/ # named or starts with manifest
             true
           else
             false

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shiny_themes (0.0.2)
+    shiny_themes (0.0.4)
       rails (~> 4.2)
 
 GEM
@@ -55,7 +55,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.99)
+    mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     nokogiri (1.6.7.2-x86-mingw32)
