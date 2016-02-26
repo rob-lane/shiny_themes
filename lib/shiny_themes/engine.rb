@@ -40,7 +40,6 @@ module ShinyThemes
         end
       end
       Dir.glob(Rails.root.join(app.config.theme.path, '*', 'assets', '**', 'manifest*')) do |manifest|
-        byebug
         path = Pathname(manifest)
         next if path.directory?
 
