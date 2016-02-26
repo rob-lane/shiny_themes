@@ -6,13 +6,16 @@ javascript and image assets are grouped together as a 'theme' which is named by 
 
 ### Installation  
 This gem is a Rails v4 plugin gem
-  
-    gem 'shiny_themes     
-or  
 
-    gem install 'shiny_themes'
+  **Add this to your Gemfile**  
     
-Make sure you run the **install generator** to install the plugin.
+    gem 'shiny_themes'
+      
+  **And install the new gem**
+   
+    bundle install 
+    
+Then run the **install generator**
 
     rails generate shiny_themes:install
 
@@ -31,7 +34,18 @@ This creates a new default theme with javascript and stylesheet manifests as wel
 named something other then **application**.  The theme is installed to the path contained in the config, defaults to 
 'app/themes'.
 
-**TODO: Theme Update**
+#### Controller specific themes  
+
+You can select a theme specifically for a controller with the class method ```renders_theme``` 
+
+    renders_theme 'theme_name', options = {layout: 'optional_default_layout'}
+    
+#### Saving theme configuration
+
+You can persist a theme configuration from a specific controller using the ```update_current_theme``` method which 
+will update the theme configuration for the controller and by default save the configuration to themes.yml.  
+
+    update_current_theme 'new_theme', options = { layout: 'optional_default_layout', dont_save: false }
 
 ### Template Support  
 Currently the gem only supports the ERB language for templates.  This should eventually be expanded however the ERB
