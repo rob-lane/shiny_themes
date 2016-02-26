@@ -36,11 +36,17 @@ module ShinyThemes
         if path =~ /#{app.config.theme.path}/
           if !%w(.js .css).include?(File.extname(filename))
             true
-          elsif path =~ /^[^\/]+\/manifest((_|-).+)?\.(js|css|scss|sass)$/ # named or starts with manifest
-            true
-          else
-            false
           end
+        end
+      end
+      Dir.glob(Rails.root.join(app.config.theme.path, '*', 'assets', 'javascripts', '**', 'manifest*')) do |manifest|
+        path = Pathname(manifest)
+        next if path.directory?
+
+        if %w(.scss .sass').include?(path.extname)
+          app.config.assets.precompile << "#{path.parent.basename}/#{path.basename}.css"
+        else
+          app.config.assets.precompile << "#{path.parent.basename}/#{path}"
         end
       end
     end
