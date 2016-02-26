@@ -39,12 +39,13 @@ module ShinyThemes
           end
         end
       end
-      Dir.glob(Rails.root.join(app.config.theme.path, '*', 'assets', 'javascripts', '**', 'manifest*')) do |manifest|
+      Dir.glob(Rails.root.join(app.config.theme.path, '*', 'assets', '**', 'manifest*')) do |manifest|
+        byebug
         path = Pathname(manifest)
         next if path.directory?
 
         if %w(.scss .sass').include?(path.extname)
-          app.config.assets.precompile << "#{path.parent.basename}/#{path.basename}.css"
+          app.config.assets.precompile << "#{path.parent.basename}/#{path.basename(".*")}.css"
         else
           app.config.assets.precompile << "#{path.parent.basename}/#{path}"
         end
