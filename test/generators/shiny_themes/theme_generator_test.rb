@@ -6,6 +6,8 @@ class ThemeGeneratorTest < Rails::Generators::TestCase
   destination Rails.root.join('tmp')
 
   def setup
+    # Reload theme config
+    ShinyThemes::Engine.theme_config.load
     prepare_destination
     @theme_name, @layout_name = 'temp_theme', 'temp_layout'
   end

@@ -4,6 +4,8 @@ require 'generators/shiny_themes/install_generator'
 class InstallGeneratorTest < Rails::Generators::TestCase
   tests ShinyThemes::Generators::InstallGenerator
   destination Rails.root.join('tmp')
+  # Reload theme config
+  ShinyThemes::Engine.theme_config.load
 
   def setup
     prepare_destination

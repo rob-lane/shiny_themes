@@ -19,14 +19,17 @@ module ShinyThemes
 
     # Load the theme.yml file and merge it with the theme configuration
     def load
-      new_config = @defaults.merge(full_config[Rails.env]).deep_symbolize_keys!
-      Rails.application.config.theme.merge!(new_config)
+      new_config = full_config[Rails.env].deep_symbolize_keys!
+      # Honor values in config file over defaults
+      @defaults.reject! { |k, _| new_config.keys.include?(k) }
+      Rails.application.config.theme.merge!(@defaults.merge(new_config))
     end
 
     # Save the current state of the theme config to the theme.yml file
     def save
-      save_config = Rails.application.config.theme.reject { |k,_| true if @defaults.keys.include?(k) }
-      full_config[Rails.env].merge!(save_config.stringify_keys)
+      # Don't save default values
+      save_config = Rails.application.config.theme.reject { |k, _| @defaults.keys.include?(k) }
+      full_config[Rails.env].merge!(save_config)
       File.open(config_pathname, 'w') { |f| f << full_config.to_yaml }
     end
 

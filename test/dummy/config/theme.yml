@@ -1,4 +1,4 @@
 ---
 test:
-  name: test_theme
-  layout: test_layout
+  :name: test_theme
+  :layout: test_layout

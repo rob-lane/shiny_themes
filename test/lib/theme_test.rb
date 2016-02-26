@@ -6,6 +6,7 @@ class ThemeTest < ActiveSupport::TestCase
 
   def setup
     @theme_name, @layout_name = 'temp_theme', 'temp_layout'
+    ShinyThemes::Engine.theme_config.load
     # Create theme directories
     build_theme_dir(@theme_name)
   end

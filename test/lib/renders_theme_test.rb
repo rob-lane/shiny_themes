@@ -19,15 +19,14 @@ module ShinyThemes
 
   class RendersThemeTest < ActionController::TestCase
     tests TestController
-
-    def setup
-      @original_theme = @controller.class.theme
-      @original_config = Rails.application.config.theme.clone
-    end
+    # Reload theme config
+    ShinyThemes::Engine.theme_config.load
+    @@original_theme = TestController.theme
+    @@original_config = Rails.application.config.theme.clone
 
     def teardown
-      @controller.class.theme = @original_theme
-      Rails.application.config.theme = @original_config
+      @controller.class.theme = @@original_theme
+      Rails.application.config.theme = @@original_config.clone
       ShinyThemes::Engine.theme_config.save
     end
 
@@ -39,8 +38,8 @@ module ShinyThemes
 
     test 'theme is created from config file' do
       theme_config = YAML.load_file(Rails.root.join('config', 'theme.yml'))[Rails.env]
-      assert_equal(@controller.class.theme.name, theme_config['name'])
-      assert_equal(@controller.class.theme.layout, theme_config['layout'])
+      assert_equal(@controller.class.theme.name, theme_config[:name])
+      assert_equal(@controller.class.theme.layout, theme_config[:layout])
     end
 
     test 'uses layout from controller theme' do

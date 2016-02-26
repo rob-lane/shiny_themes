@@ -4,6 +4,8 @@ class EngineTest < ActiveSupport::TestCase
   include ThemeTestHelper
 
   def setup
+    # Reload theme config
+    ShinyThemes::Engine.theme_config.load
     @themes_path = Rails.root.join(Rails.application.config.theme.path)
     # Grab all directory names in themes_path to get all installed theme names
     @theme_names = Dir.glob(@themes_path.join('*/')).map{ |fn| Pathname.new(fn).basename }
@@ -29,11 +31,11 @@ class EngineTest < ActiveSupport::TestCase
   end
 
   test 'theme name configured from yml file' do
-    assert_equal(@theme_config['name'], Rails.application.config.theme.name, 'Theme name in config must match theme.yml')
+    assert_equal(@theme_config[:name], Rails.application.config.theme.name, 'Theme name in config must match theme.yml')
   end
 
   test 'theme layout configured from yml file' do
-    assert_equal(@theme_config['layout'], Rails.application.config.theme.layout, 'Theme layout in config must match theme.yml')
+    assert_equal(@theme_config[:layout], Rails.application.config.theme.layout, 'Theme layout in config must match theme.yml')
   end
 
   test 'all themes asset images directories added to assets path' do
